@@ -1,26 +1,69 @@
-import React from 'react';
-import { View, Text, StyleSheet, StatusBar } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, Pressable, Text, StyleSheet, StatusBar } from 'react-native';
+
+import api from './services/api';
 
 export default function App() {
+    const [frases, setFrases] = useState([]);
+
+    useEffect(() => {
+        buscaFrases();
+    }, []);
+
+    const buscaFrases = () => {
+        api.get('random').then(response => {
+            setFrases(response.data);
+        }).catch(error => {
+            console.log(error);
+        });
+    };
+
     return (
         <>
-            <StatusBar barStyle="light-content" backgroundColor="#000000"/>
-            <View style={styles.container}>
-                <Text style={styles.title}>WhatsApp Black</Text>
-            </View>
-        </>    
+            <StatusBar barStyle="light-content" backgroundColor="#000000" />
+
+            <SafeAreaView style={styles.container}>
+                <Text style={styles.frase}>	&ldquo; {frases.sentence} &rdquo;</Text>
+                <Pressable style={styles.botao} onPress={() => buscaFrases()}>
+                    <Text style={styles.frase}>Mudar Frase</Text>
+                </Pressable>
+            </SafeAreaView>
+        </>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 10,
-        backgroundColor: '#222222',
+    titulo: {
+        fontSize: 16,
+        lineHeight: 21,
+        fontWeight: 'bold',
+        letterSpacing: 0.25,
+        color: 'white',
     },
 
-    title: {
-        color: '#fff',
-        fontSize: 20,
-        fontWeight: 'bold'
+    container: {
+        flex: 1,
+        padding: 10,
+        backgroundColor: '#222222',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
+    frase: {
+        fontSize: 16,
+        lineHeight: 21,
+        fontWeight: 'bold',
+        letterSpacing: 0.25,
+        color: 'white',
+    },
+
+    botao: {
+        alignItems: 'flex-end',
+        paddingVertical: 12,
+        paddingHorizontal: 32,
+        borderRadius: 4,
+        elevation: 3,
+        backgroundColor: 'black',
+        marginTop: 100,
     }
 });
