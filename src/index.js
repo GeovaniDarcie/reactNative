@@ -1,69 +1,83 @@
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView, Pressable, Text, StyleSheet, StatusBar } from 'react-native';
+import React from 'react';
+import { View, Text, ScrollView, StyleSheet, Image } from 'react-native';
 
-import api from './services/api';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default function App() {
-    const [frases, setFrases] = useState([]);
-
-    useEffect(() => {
-        buscaFrases();
-    }, []);
-
-    const buscaFrases = () => {
-        api.get('random').then(response => {
-            setFrases(response.data);
-        }).catch(error => {
-            console.log(error);
-        });
-    };
-
+const app = () => {
     return (
-        <>
-            <StatusBar barStyle="light-content" backgroundColor="#000000" />
+        <View style={{ flex: 1 }}>
+            <ScrollView>
+                <View style={styles.header}>
+                    <Image
+                        style={styles.logo}
+                        source={require('../logo.png')}
+                    />
 
-            <SafeAreaView style={styles.container}>
-                <Text style={styles.frase}>	&ldquo; {frases.sentence} &rdquo;</Text>
-                <Pressable style={styles.botao} onPress={() => buscaFrases()}>
-                    <Text style={styles.frase}>Mudar Frase</Text>
-                </Pressable>
-            </SafeAreaView>
-        </>
+                    <View style={styles.headerIcons}>
+                        <Icon name="bell" style={{ margin: 10 }} size={18} />
+                        <Icon name="search" style={{ margin: 10 }} size={18} />
+                        <Icon name="home" style={{ margin: 10 }} size={18} />
+                    </View>
+
+                </View>
+                <Image
+                    style={styles.video}
+                    source={require('../video1.jpeg')}
+                />
+                <Image
+                    style={styles.video}
+                    source={require('../video2.jpeg')}
+                />
+                <Image
+                    style={styles.video}
+                    source={require('../video3.jpeg')}
+                />
+            </ScrollView>
+            <View style={styles.footer}><Text>Footer</Text></View>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
-    titulo: {
-        fontSize: 16,
-        lineHeight: 21,
-        fontWeight: 'bold',
-        letterSpacing: 0.25,
-        color: 'white',
+    header: {
+        margin: 1,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: '#eeeeee',
+        padding: 1,
+        alignItems: 'center',
+        flexDirection: 'row'
     },
 
-    container: {
+    headerIcons: {
         flex: 1,
-        padding: 10,
-        backgroundColor: '#222222',
-        justifyContent: 'center',
-        alignItems: 'center'
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
     },
 
-    frase: {
-        fontSize: 16,
-        lineHeight: 21,
-        fontWeight: 'bold',
-        letterSpacing: 0.25,
-        color: 'white',
+    main: {
+        color: 'black',
+        fontSize: 20,
     },
 
-    botao: {
-        alignItems: 'flex-end',
-        paddingVertical: 12,
-        paddingHorizontal: 32,
-        borderRadius: 4,
-        elevation: 3,
-        backgroundColor: 'black',
-        marginTop: 100,
+    logo: {
+        width: 100,
+        height: 70,
+    },
+
+    video: {
+        width: '100%',
+        height: 300
+    },
+
+    footer: {
+        fontSize: 10,
+        margin: 1,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: '#eeeeee',
+        padding: 1,
     }
 });
+
+export default app;
